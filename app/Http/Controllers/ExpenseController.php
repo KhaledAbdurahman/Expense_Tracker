@@ -9,14 +9,16 @@ class ExpenseController extends Controller
 {
     public function index()
     {
-        $ExpensesFromDB = Expense::all();
+        $ExpensesFromDB = Expense::where('user_id', session('user_id'))->orderBy('date', 'desc')->get();
 
         return view('expenses.index', ['expenses' => $ExpensesFromDB]);
     }
 
     public function show($ExpenseID)
     {
-        $singleExpenseFromDB = Expense::find($ExpenseID);
+        $singleExpenseFromDB = Expense::where('user_id', session('user_id'))
+            ->where('id', $ExpenseID)
+            ->firstOrFail();
 
         return view('expenses.show', ['expense' => $singleExpenseFromDB]);
     }
@@ -42,12 +44,14 @@ class ExpenseController extends Controller
         $category = request('category');
         $description = request('description');
         $amount = request('amount');
+        $expenseCreator = session('user_id');
 
         Expense::create([
             'date' => $date,
             'category' => $category,
             'description' => $description,
             'amount' => $amount,
+            'user_id' => $expenseCreator,
         ]);
 
         return to_route('expenses.index');
@@ -55,6 +59,11 @@ class ExpenseController extends Controller
 
     public function edit(Expense $expense)
     {
+        // Check if the expense belongs to the logged-in user
+        if ($expense->user_id !== session('user_id')) {
+            abort(403, 'Unauthorized action.');
+        }
+
 
         return view('expenses.edit', ['expense' => $expense]);
     }

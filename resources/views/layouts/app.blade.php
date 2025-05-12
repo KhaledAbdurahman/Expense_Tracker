@@ -8,8 +8,8 @@
 </head>
 <body class="bg-light p-5">
   <div class="container">
-    <h1 class="mb-5">@yield('head')</h1>
 
+    <h1 class="mb-5">@yield('head')</h1>
 
     @yield('content')
 

@@ -3,6 +3,19 @@
 @section('title') Index @endsection
 @section('head') Online Expense Tracker @endsection
 
+<div class="d-flex justify-content-end mb-3">
+    @if(session('user_id'))
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
+    @else
+        <a href="{{ route('login') }}" class="btn btn-primary me-2">Login</a>
+        <a href="{{ route('register') }}" class="btn btn-secondary">Register</a>
+    @endif
+</div>
+
+
 @section('content')
 
 
