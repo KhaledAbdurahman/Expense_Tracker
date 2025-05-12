@@ -20,8 +20,17 @@
       <div class="card-footer d-flex justify-content-between">
         <a href="{{ route('expenses.index') }}" class="btn btn-secondary">Back to List</a>
         <div>
-          <button class="btn btn-primary me-2">Edit</button>
-          <button class="btn btn-danger">Delete</button>
+          <a href="{{route('expenses.edit', $expense['id'])}}" class="btn btn-primary me-2">Edit</a>
+
+            <form style="display: inline" method="POST" action="{{ route('expenses.destroy', $expense['id']) }}">
+                @csrf
+                @method('DELETE')
+                {{-- <input type="hidden" name="_method" value="DELETE"> --}}
+                {{-- <input type="hidden" name="_token" value="{{ csrf_token() }}"> --}}
+
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+
         </div>
       </div>
     </div>

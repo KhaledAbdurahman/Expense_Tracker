@@ -28,6 +28,13 @@ class ExpenseController extends Controller
 
     public function store()
     {
+        //validate the data
+        request()->validate([
+            'date' => 'required|date',
+            'category' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
+            'amount' => 'required|numeric|min:0',
+        ]);
 
         $data = request()->all();
 
